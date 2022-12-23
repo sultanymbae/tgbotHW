@@ -9,6 +9,7 @@ async def start_handler(message: types.Message):
                            text=f"Салам хозяин {message.from_user.first_name}",
                            reply_markup=start_markup)
 
+
 async def quiz_1(message: types.Message):
     markup = InlineKeyboardMarkup()
     button_call_1 = InlineKeyboardButton("NEXT", callback_data="button_call_1")
@@ -36,8 +37,11 @@ async def quiz_1(message: types.Message):
     )
 
 
+async def get_random_user(message: types.Message):
+    await sql_command_random(message)
 
 
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(start_handler, commands=['start', 'help'])
     dp.register_message_handler(quiz_1, commands=['quiz'])
+    dp.register_message_handler(get_random_user, commands=['get'])
