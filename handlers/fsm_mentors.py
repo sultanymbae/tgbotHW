@@ -11,7 +11,7 @@ class FSMAdmin(StatesGroup):
     name = State()
     course = State()
     age = State()
-    group = State()
+    groupp = State()
     submit = State()
 
 
@@ -64,20 +64,21 @@ async def load_age(message: types.Message, state: FSMContext):
         await message.answer('Группа студента')
 
 
-async def load_group(message: types.Message, state: FSMContext):
+async def load_groupp(message: types.Message, state: FSMContext):
     if not message.text.isdigit() and message.text.isalnum():
         await message.answer('Введите правильно и только числа!')
     else:
         async with state.proxy() as data:
-            data['group'] = message.text
+            data['groupp'] = message.text
             await message.answer(f"ID: {data['id']} \nИмя: {data['name']} \nНаправление: {data['course']} "
-                                 f"\nВозраст: {data['age']} \nГруппа: {data['group']}")
+                                 f"\nВозраст: {data['age']} \nГруппа: {data['groupp']}")
         await FSMAdmin.next()
         await message.answer('Данные верны?', reply_markup=client_kb.submit_markup)
 
 
 async def submit(message: types.Message, state: FSMContext):
     if message.text.lower() == 'да':
+        await sql_command_insert(state)
         await state.finish()
         await message.answer('Ментор зарегистрирован!')
     elif message.text.lower() == 'нет':
@@ -102,5 +103,5 @@ def register_handlers_fsm_mentor(dp: Dispatcher):
     dp.register_message_handler(load_name, state=FSMAdmin.name)
     dp.register_message_handler(load_course, state=FSMAdmin.course)
     dp.register_message_handler(load_age, state=FSMAdmin.age)
-    dp.register_message_handler(load_group, state=FSMAdmin.group)
+    dp.register_message_handler(load_groupp, state=FSMAdmin.groupp)
     dp.register_message_handler(submit, state=FSMAdmin.submit)
