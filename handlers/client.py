@@ -2,6 +2,8 @@ from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from config import bot, dp
 from keyboards.client_kb import start_markup
+from database.bot_db import sql_command_random
+from parser.flashlight import parser
 
 
 async def start_handler(message: types.Message):
@@ -40,8 +42,17 @@ async def quiz_1(message: types.Message):
 async def get_random_user(message: types.Message):
     await sql_command_random(message)
 
+async def get_flashlight(message: types.Message):
+    flashlight = parser()
+    for i in flashlight:
+        await message.answer(
+            f"{i['link']}\n"
+            f"{i['title']}\n"
+            f"{i['price']} грн"
+        )
 
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(start_handler, commands=['start', 'help'])
     dp.register_message_handler(quiz_1, commands=['quiz'])
     dp.register_message_handler(get_random_user, commands=['get'])
+    dp.register_message_handler(get_flashlight, commands=['flashlight'])
