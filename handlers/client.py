@@ -3,7 +3,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from config import bot, dp
 from keyboards.client_kb import start_markup
 from database.bot_db import sql_command_random
-from parser.flashlight import parser
+from parser.flashlight import ParserFlashlight
 
 
 async def start_handler(message: types.Message):
@@ -17,11 +17,11 @@ async def quiz_1(message: types.Message):
     button_call_1 = InlineKeyboardButton("NEXT", callback_data="button_call_1")
     markup.add(button_call_1)
 
-    question = "Сколько лет Роналду?"
+    question = "Сколько лет Месси?"
     answers = [
         '44',
         '40',
-        '37',
+        '35',
         '55',
         '69',
     ]
@@ -43,7 +43,7 @@ async def get_random_user(message: types.Message):
     await sql_command_random(message)
 
 async def get_flashlight(message: types.Message):
-    flashlight = parser()
+    flashlight = ParserFlashlight.parser()
     for i in flashlight:
         await message.answer(
             f"{i['link']}\n"

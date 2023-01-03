@@ -8,9 +8,9 @@ start_markup = ReplyKeyboardMarkup(
 
 start_button = KeyboardButton("/start")
 quiz_button = KeyboardButton("/quiz")
-game_button = KeyboardButton("game")
+flash_button = KeyboardButton("/flashlight")
+start_markup.add(start_button, quiz_button, flash_button)
 
-start_markup.add(start_button, quiz_button, game_button)
 cancel_button = KeyboardButton('Отменить регистрацию')
 cancel_markup = ReplyKeyboardMarkup(
     resize_keyboard=True,
